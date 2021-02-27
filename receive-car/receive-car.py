@@ -14,7 +14,6 @@ import base64
 import asyncio
 import traceback
 from sort import *
-from parse_config import ConfigParser
 
 from keras.backend.tensorflow_backend import set_session
 import tensorflow as tf
@@ -72,14 +71,17 @@ sys.path.append(api_path)
 redis_path = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), "../redisServer")
 sys.path.append(redis_path)
+logger_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../api")
+sys.path.append(logger_path)
 
+from parse_config import ConfigParser
 from debugger import draw_ssd, draw_plate
 from server_launcher import detection_func as ssd_cheliang_detect
 from webplate import car_plate_detect
 from webapp import color_detect
 from webCarModelapp import car_model_detect
 from redisProcess import RfidRedis
-from utils import get_equal_rate_1
+from utils_etc import get_equal_rate_1
 from os.path import exists, basename
 
 my_log = ConfigParser('log/log')
