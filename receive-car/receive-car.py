@@ -1146,5 +1146,5 @@ if __name__ == "__main__":
                     pika.ConnectionParameters(host='localhost', port=5672, heartbeat=0))
 
             channel = connection.channel()
-            channel.queue_declare(queue='hello')
+            channel.queue_declare(queue='hello', durable=True)
             continue

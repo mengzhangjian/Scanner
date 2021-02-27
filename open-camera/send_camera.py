@@ -68,7 +68,7 @@ else:
         my_logger.info(traceback.format_exc())
 
 channel = connection.channel()
-channel.queue_declare(queue='hello')
+channel.queue_declare(queue='hello', durable=True)
 
 # Pin Definitions:
 led_pin_4 = 23
