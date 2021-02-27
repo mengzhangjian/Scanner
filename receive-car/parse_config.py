@@ -17,7 +17,7 @@ class ConfigParser:
             run_id = datetime.now().strftime(r'%m%d_%H%M%S')
 
         save_dir = Path(log_path)
-        log_dir = save_dir / log_path / run_id
+        log_dir = save_dir / run_id
         if not log_dir.exists():
             log_dir.mkdir(parents=True)
         # self.img_dir = save_dir / 'img' / run_id
