@@ -1,21 +1,20 @@
 # coding=utf-8
-import pika
-import cv2
 import os
+import time
+import cv2
+import sys
+import pika
 import uuid
+import json
+import glob
 import pickle
 import requests
-import json
-from sort import *
-from api import logger
 import logging
 import base64
-import glob
 import asyncio
-import sys
 import traceback
-from shutil import rmtree
-import time
+from sort import *
+from parse_config import ConfigParser
 
 from keras.backend.tensorflow_backend import set_session
 import tensorflow as tf
@@ -49,10 +48,6 @@ post_url_B = "http://218.241.189.5:50030/MchApi/evt/receive"
 
 headers = {'Content-type': 'application/json'}
 
-# ssd_cheliang_path = os.path.join(os.path.dirname(
-#     os.path.abspath(__file__)), "../ssd_cheliang_5")
-# sys.path.append(ssd_cheliang_path)
-# print(ssd_cheliang_path)
 
 car_detection_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../car_detection_6")
 sys.path.append(car_detection_path)
@@ -83,17 +78,16 @@ from server_launcher import detection_func as ssd_cheliang_detect
 from webplate import car_plate_detect
 from webapp import color_detect
 from webCarModelapp import car_model_detect
-from log import get_logger
 from redisProcess import RfidRedis
 from utils import get_equal_rate_1
 from os.path import exists, basename
 
-if exists("log"):
-    rmtree('log')
-os.mkdir('log')
+my_log = ConfigParser('log/log')
+result_log =  ConfigParser('log/result')
 
-my_logger = get_logger('./log/log.log')
-result_logger = get_logger('./log/result.log')
+my_logger = my_log.get_logger("plate_log", 1)
+result_logger =  result_log.get_logger("result_log", 1)
+
 
 loop = asyncio.get_event_loop()
 

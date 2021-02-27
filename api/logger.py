@@ -1,27 +1,30 @@
+import json
+import os
 import logging
-from logging.handlers import TimedRotatingFileHandler
+import logging.config
+from pathlib import Path
+from collections import OrderedDict
 
+pwd_path = os.path.dirname(__file__)
+json_path = os.path.join(pwd_path, 'logger_config.json')
+def read_json(fname):
+    fname = Path(fname)
+    with fname.open('rt') as handle:
+        return json.load(handle, object_hook=OrderedDict)
 
-class Logger:
-    """logger class"""
-    def __init__(self, log_file_name, log_level, logger_name):
-        """creat logger"""
-        self.__logger = logging.getLogger(logger_name)
-        self.__logger.setLevel(log_level)
+def setup_logging(save_dir, log_config=json_path, default_level=logging.INFO):
+    """
+    Setup logging configuration
+    """
+    log_config = Path(log_config)
+    if log_config.is_file():
+        config = read_json(log_config)
+        # modify logging paths based on run config
+        for _, handler in config['handlers'].items():
+            if 'filename' in handler:
+                handler['filename'] = str(save_dir / handler['filename'])
 
-        file_handler = TimedRotatingFileHandler(filename=log_file_name, when='S', interval=1,
-                                                backupCount=3)
-        file_handler.suffix = "%Y-%m-%d"
-        console_handler = logging.StreamHandler()
-
-        # 定义handler的输出格式
-        formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(filename)s - %(message)s")
-        file_handler.setFormatter(formatter)
-        console_handler.setFormatter(formatter)
-
-        # 给logger添加handler
-        self.__logger.addHandler(file_handler)
-        self.__logger.addHandler(console_handler)
-
-    def get_log(self):
-        return self.__logger
+        logging.config.dictConfig(config)
+    else:
+        print("Warning: logging configuration file is not found in {}.".format(log_config))
+        logging.basicConfig(level=default_level)
