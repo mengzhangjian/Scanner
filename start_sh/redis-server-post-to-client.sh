@@ -1,0 +1,1 @@
+docker run -it -d  -v /etc/localtime:/etc/localtime:ro -e PYTHONIOENCODING=utf-8 --network chepai --restart=always --name post-client  -v /home/nvidia/Documents/tx2_chepai/redis-server-post-client/:/work post-client:0.1

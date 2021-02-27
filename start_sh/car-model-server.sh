@@ -1,0 +1,1 @@
+docker run -it -d --runtime nvidia -e PYTHONIOENCODING=utf-8 -v /etc/localtime:/etc/localtime:ro --network chepai -p 8888:8888  -v /home/nvidia/Documents/tx2_chepai:/work --restart=always --name car-model  car-model-server:0.2

@@ -1,0 +1,23 @@
+{
+    "version": 1, 
+    "uart": {
+        "port": "/dev/ttyTHS0",
+        "bitrate": 115200,
+        "timeout": 0
+    },
+    "rabbitmq": {
+        "administrator": "chepai",
+        "passwd": "123456",
+        "host": "vbs-rabbitmq",
+        "port": 5672,
+        "queue": "hello",
+        "routing_key": "hello"
+    },
+    "camera": {
+        "rtsp_address": "rtsp://admin:abc12345678@192.168.1.64:554/",
+        "width": 1920,
+        "height": 1080,
+        "latency": 50
+    }
+    
+}
